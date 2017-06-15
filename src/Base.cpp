@@ -6,19 +6,30 @@
 namespace cnbiros {
 	namespace robotino {
 
-Base::Base(const std::string address, ros::NodeHandle* node) {
+Base::Base(const std::string address) {
 	this->address_ = address;
 	this->robotinocom_ = new Communication;
 	this->robotinocom_->setAddress(address.c_str());
 
-	this->rosnode_ = node;
-	this->rossrv_communication_ = this->rosnode_->advertiseService(
-								  this->rosnode_->getNamespace()+"/communication", 
-								  &Base::on_communication_service_, this);
+	this->robotinopower_ = new Power;
+	this->robotinopower_->setComId(this->robotinocom_->id());
 }
 
 Base::~Base(void) {
 	delete robotinocom_;
+	delete robotinopower_;
+}
+
+void Base::EnableServices(ros::NodeHandle* node) {
+	
+	this->rossrv_communication_ = node->advertiseService(
+								  node->getNamespace()+"/communication", 
+								  &Base::on_communication_service_, this);
+	
+	this->rossrv_power_ = node->advertiseService(
+						  node->getNamespace()+"/power", 
+						  &Base::on_power_service_, this);
+
 }
 
 bool Base::on_communication_service_(cnbiros_robotino::CommService::Request &req,
@@ -40,7 +51,20 @@ bool Base::on_communication_service_(cnbiros_robotino::CommService::Request &req
 	}
 
 	return res.result;
+}
 
+bool Base::on_power_service_(cnbiros_robotino::PowerService::Request &req,
+							 cnbiros_robotino::PowerService::Response &res) {
+
+	res.voltage   			 = this->robotinopower_->voltage();
+	res.current   			 = this->robotinopower_->current();
+	res.external_power  	 = this->robotinopower_->ext_power();
+	res.num_chargers 		 = this->robotinopower_->num_chargers();
+	res.battery_type     	 = std::string(this->robotinopower_->batteryType());
+	res.battery_low	  		 = this->robotinopower_->batteryLow();
+	res.battery_low_shutdown = this->robotinopower_->batteryLowShutdownCounter();
+
+	return true;
 }
 
 std::string Base::GetAddress(void) {

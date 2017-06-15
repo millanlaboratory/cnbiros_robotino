@@ -10,7 +10,9 @@ int main (int argc, char** argv) {
 	ros::NodeHandle node("~");
 	ros::Rate r(10);
 
-	cnbiros::robotino::Base robotino(address, &node);
+	cnbiros::robotino::Base robotino(address);
+
+	robotino.EnableServices(&node);
 
 	ROS_INFO("Try to connect to robotino base at: %s", address.c_str());
 	robotino.Connect();

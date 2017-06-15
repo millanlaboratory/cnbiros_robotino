@@ -17,6 +17,7 @@ include_directories(${catkin_INCLUDE_DIRS}
 add_service_files(
   FILES
   CommService.srv
+  PowerService.srv
 )
 
 generate_messages(
@@ -35,6 +36,7 @@ catkin_package(
 
 add_library(cnbiros_robotino
 			src/Communication.cpp
+			src/Power.cpp
 			src/Base.cpp)
 target_link_libraries(cnbiros_robotino 
 					  ${catkin_LIBRARIES}

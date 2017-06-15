@@ -1,0 +1,8 @@
+---
+float32 voltage
+float32 current
+bool    external_power
+int16   num_chargers
+string  battery_type
+bool    battery_low
+int16     battery_low_shutdown
