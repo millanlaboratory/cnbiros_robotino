@@ -37,10 +37,14 @@ catkin_package(
 add_library(cnbiros_robotino
 			src/Communication.cpp
 			src/Power.cpp
-			src/Base.cpp)
+			src/Base.cpp
+			src/Infrared.cpp)
 target_link_libraries(cnbiros_robotino 
 					  ${catkin_LIBRARIES}
 					  ${REC_ROBOTINO_API2_LIBRARY})
 
 add_executable(example_base examples/example_base.cpp)
 target_link_libraries(example_base cnbiros_robotino)
+
+add_executable(example_infrared examples/example_infrared.cpp)
+target_link_libraries(example_infrared cnbiros_robotino)
