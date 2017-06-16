@@ -6,13 +6,13 @@
 namespace cnbiros {
 	namespace robotino {
 
-Infrared::Infrared(cnbiros::robotino::Base* base, ros::NodeHandle* node) : 
-				   cnbiros::core::NodeInterface (node, "infrared") {
+Infrared::Infrared(cnbiros::robotino::Base* base) {
 
 	this->robotinobase_ = base;
-	this->setComId(this->robotinobase_->GetId());
-	this->rospub_ = this->GetNode()->advertise<sensor_msgs::PointCloud>
-								("/robotino_infrared", CNBIROS_CORE_BUFFER_MESSAGES);
+	this->setComId(base->GetId());
+	this->rospub_ = base->GetNode()->advertise<sensor_msgs::PointCloud>
+								(base->GetNode()->getNamespace()+"/infrared", 
+								 CNBIROS_CORE_BUFFER_MESSAGES);
 }
 
 Infrared::~Infrared(void) {}

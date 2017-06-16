@@ -6,30 +6,16 @@
 namespace cnbiros {
 	namespace robotino {
 
-Base::Base(const std::string address) {
-	this->address_ = address;
+Base::Base(ros::NodeHandle* node) : cnbiros::core::NodeInterface(node, "robotino_base") {
 	this->robotinocom_ = new Communication;
-	this->robotinocom_->setAddress(address.c_str());
 
-	this->robotinopower_ = new Power;
-	this->robotinopower_->setComId(this->robotinocom_->id());
+	this->rossrv_communication_ = node->advertiseService(
+								  node->getNamespace()+"/communication", 
+								  &Base::on_communication_service_, this);
 }
 
 Base::~Base(void) {
 	delete robotinocom_;
-	delete robotinopower_;
-}
-
-void Base::EnableServices(ros::NodeHandle* node) {
-	
-	this->rossrv_communication_ = node->advertiseService(
-								  node->getNamespace()+"/communication", 
-								  &Base::on_communication_service_, this);
-	
-	this->rossrv_power_ = node->advertiseService(
-						  node->getNamespace()+"/power", 
-						  &Base::on_power_service_, this);
-
 }
 
 bool Base::on_communication_service_(cnbiros_robotino::CommService::Request &req,
@@ -38,11 +24,11 @@ bool Base::on_communication_service_(cnbiros_robotino::CommService::Request &req
 	res.result = false;
 	switch(req.type) {
 		case Base::DoConnect:
-			ROS_INFO("robotino requested to connect to %s", this->GetAddress().c_str());
-			res.result = this->Connect(true);
+			ROS_INFO("robotino requested to connect to %s", req.address.c_str());
+			res.result = this->Connect(req.address, true);
 			break;
 		case Base::DoDisconnect:
-			ROS_INFO("robotino requested to disconnect from %s", this->GetAddress().c_str());
+			ROS_INFO("robotino requested to disconnect");
 			res.result = this->Disconnect();
 			break;
 		default:
@@ -53,33 +39,31 @@ bool Base::on_communication_service_(cnbiros_robotino::CommService::Request &req
 	return res.result;
 }
 
-bool Base::on_power_service_(cnbiros_robotino::PowerService::Request &req,
-							 cnbiros_robotino::PowerService::Response &res) {
 
-	res.voltage   			 = this->robotinopower_->voltage();
-	res.current   			 = this->robotinopower_->current();
-	res.external_power  	 = this->robotinopower_->ext_power();
-	res.num_chargers 		 = this->robotinopower_->num_chargers();
-	res.battery_type     	 = std::string(this->robotinopower_->batteryType());
-	res.battery_low	  		 = this->robotinopower_->batteryLow();
-	res.battery_low_shutdown = this->robotinopower_->batteryLowShutdownCounter();
-
-	return true;
-}
 
 std::string Base::GetAddress(void) {
-	return this->address_;
+	std::string address = "undefined_address";
+	if(this->IsConnected()) {
+		this->robotinocom_->address();
+	} else {
+		ROS_WARN("robotino is not connected to any address");
+	}
+
+	return address;
 }
 
 ComId Base::GetId(void) {
 	return this->robotinocom_->id();
 }
 
-bool Base::Connect(bool isblocking) {
+bool Base::Connect(const std::string address, bool isblocking) {
 
 	if(this->IsConnected() == true) {
-		ROS_INFO("robotino already connected at %s", this->GetAddress().c_str());
+		ROS_WARN("robotino already connected at %s. Need to be disconnected first.", 
+				 this->robotinocom_->address());
 		return this->IsConnected();
+	} else {
+		this->robotinocom_->setAddress(address.c_str());
 	}
 
 	try {
@@ -98,7 +82,7 @@ bool Base::Connect(bool isblocking) {
 bool Base::Disconnect(void) {
 
 	if(this->IsConnected() == false) {
-		ROS_INFO("robotino already disconnected from %s", this->GetAddress().c_str());
+		ROS_WARN("robotino is not connected");
 	} else {
 		this->robotinocom_->disconnectFromServer();
 	}

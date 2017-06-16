@@ -6,23 +6,20 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud.h>
 
-#include "cnbiros_core/NodeInterface.hpp"
 #include "cnbiros_robotino/Base.hpp"
 #include "cnbiros_robotino/Flags.hpp"
 
 namespace cnbiros {
 	namespace robotino {
 
-class Infrared :  public cnbiros::core::NodeInterface,
-				  public rec::robotino::api2::DistanceSensorArray {
+class Infrared : public rec::robotino::api2::DistanceSensorArray {
 
 	public:
-		Infrared(cnbiros::robotino::Base* base, ros::NodeHandle* node);
+		Infrared(cnbiros::robotino::Base* base);
 		~Infrared(void);
 
 
 	private:
-		void onRunning(void) {};
 		void distancesChangedEvent(const float* ranges, unsigned int size);
 
 	private:

@@ -38,7 +38,9 @@ add_library(cnbiros_robotino
 			src/Communication.cpp
 			src/Power.cpp
 			src/Base.cpp
-			src/Infrared.cpp)
+			src/Infrared.cpp
+			src/Odometry.cpp
+			src/Motors.cpp)
 target_link_libraries(cnbiros_robotino 
 					  ${catkin_LIBRARIES}
 					  ${REC_ROBOTINO_API2_LIBRARY})
