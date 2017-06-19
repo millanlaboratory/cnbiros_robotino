@@ -98,6 +98,10 @@ void Base::ProcessEvents(void) {
 	this->robotinocom_->processEvents();
 }
 
+void Base::onRunning(void) {
+	this->ProcessEvents();
+}
+
 	}
 }
 

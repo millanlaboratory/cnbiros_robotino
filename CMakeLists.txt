@@ -45,6 +45,9 @@ target_link_libraries(cnbiros_robotino
 					  ${catkin_LIBRARIES}
 					  ${REC_ROBOTINO_API2_LIBRARY})
 
+add_executable(ros_robotino src/ros_robotino.cpp)
+target_link_libraries(ros_robotino cnbiros_robotino)
+
 add_executable(example_base examples/example_base.cpp)
 target_link_libraries(example_base cnbiros_robotino)
 

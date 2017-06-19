@@ -23,6 +23,7 @@ class Base : public cnbiros::core::NodeInterface {
 		
 		void ProcessEvents(void);
 
+		virtual void onRunning(void);
 	private:
 		bool on_communication_service_(cnbiros_robotino::CommService::Request &req,
 									   cnbiros_robotino::CommService::Response &res);
