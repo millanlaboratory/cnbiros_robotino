@@ -26,6 +26,7 @@ class Base : public cnbiros::core::NodeInterface {
 	private:
 		bool on_communication_service_(cnbiros_robotino::CommService::Request &req,
 									   cnbiros_robotino::CommService::Response &res);
+
 	public:
 		static const unsigned int DoConnect 	= 1;
 		static const unsigned int DoDisconnect 	= 2;

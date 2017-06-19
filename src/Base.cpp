@@ -21,25 +21,25 @@ Base::~Base(void) {
 bool Base::on_communication_service_(cnbiros_robotino::CommService::Request &req,
 									 cnbiros_robotino::CommService::Response &res) {
 
-	res.result = false;
+	res.result = true;
 	switch(req.type) {
 		case Base::DoConnect:
 			ROS_INFO("robotino requested to connect to %s", req.address.c_str());
-			res.result = this->Connect(req.address, true);
+			this->Connect(req.address.c_str(), true);
 			break;
 		case Base::DoDisconnect:
 			ROS_INFO("robotino requested to disconnect");
-			res.result = this->Disconnect();
+			this->Disconnect();
 			break;
 		default:
 			ROS_ERROR("Unknown communication service requested");
 			break;
 	}
 
+	res.connected = this->IsConnected();
+
 	return res.result;
 }
-
-
 
 std::string Base::GetAddress(void) {
 	std::string address = "undefined_address";

@@ -12,6 +12,10 @@ Power::Power(cnbiros::robotino::Base* base) {
 	// Robotino base connection
 	this->setComId(base->GetId());
 
+	// Topic initialization
+	this->rospub_ = base->GetNode()->advertise<sensor_msgs::BatteryState>
+								(base->GetNode()->getNamespace()+"/power", 
+								 CNBIROS_CORE_BUFFER_MESSAGES);
 
 	// Ros initialization
 	this->rossrv_power_ = base->GetNode()->advertiseService(
@@ -37,13 +41,23 @@ bool Power::on_power_service_(cnbiros_robotino::PowerService::Request &req,
 
 void Power::readingsEvent(float voltage, float current, bool extpower, int nchargers,
 					 	  const char* btype, bool blow, int blowcounter) {
+
+	// Created by L.Tonin  <luca.tonin@epfl.ch> on 19/06/17 12:52:46	
+	// api not working!
+	
+	sensor_msgs::BatteryState msg;
+	msg.voltage = voltage;
+	msg.current = current;
+
 	if(extpower == true) {
 		ROS_INFO("robotino connected to external power (battery status: voltage=%fV, current=%fA)", 
 				  voltage, current);
-	} else if(blow == false) {
+	} else if(blow == true) {
 		ROS_WARN("robotino's battery level is getting low: voltage=%fV, current=%fA", voltage, current);
 		ROS_WARN("robotino's counter to shutdown: %d", blowcounter);
 	}
+
+	this->rospub_.publish(msg);
 }
 
 

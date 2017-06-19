@@ -3,6 +3,7 @@
 
 #include <rec/robotino/api2/PowerManagement.h>
 #include <ros/ros.h>
+#include <sensor_msgs/BatteryState.h>
 
 #include "cnbiros_robotino/Base.hpp"
 #include "cnbiros_robotino/PowerService.h"
@@ -24,6 +25,7 @@ class Power : public rec::robotino::api2::PowerManagement {
 							   cnbiros_robotino::PowerService::Response &res);
 	private:
 		ros::ServiceServer 			rossrv_power_;
+		ros::Publisher 			 	rospub_;
 		cnbiros::robotino::Base* 	robotinobase_;
 	
 };

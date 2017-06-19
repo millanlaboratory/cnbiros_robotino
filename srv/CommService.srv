@@ -1,4 +1,5 @@
 uint16 type
 string address
 ---
+bool connected
 bool result
