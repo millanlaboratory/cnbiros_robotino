@@ -5,6 +5,6 @@
 #define CNBIROS_ROBOTINO_BASE_RADIUS 			0.2f				// [m]
 
 #define CNBIROS_ROBOTINO_INFRARED_HEIGHT 		0.03f				// [m]
-#define CNBIROS_ROBOTINO_INFRARED_RANGE_MAX		0.41f 				// [m]
+#define CNBIROS_ROBOTINO_INFRARED_RANGE_MAX		0.40f 				// [m]
 #define CNBIROS_ROBOTINO_INFRARED_ANGLE_INC		(40.0f*M_PI)/180.0f // [rad] 
 #endif

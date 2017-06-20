@@ -7,6 +7,12 @@ find_package(catkin REQUIRED COMPONENTS roscpp std_msgs message_generation
 
 SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 
+# PCL 
+find_package(PCL REQUIRED)
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
 # Robotino libraries
 set(CMAKE_MODULE_PATH /usr/local/robotino/api2/cmake)
 find_package(RobotinoAPI2)
@@ -43,7 +49,8 @@ add_library(cnbiros_robotino
 			src/Motors.cpp)
 target_link_libraries(cnbiros_robotino 
 					  ${catkin_LIBRARIES}
-					  ${REC_ROBOTINO_API2_LIBRARY})
+					  ${REC_ROBOTINO_API2_LIBRARY}
+					  ${PCL_LIBRARIES})
 
 add_executable(ros_robotino src/ros_robotino.cpp)
 target_link_libraries(ros_robotino cnbiros_robotino)

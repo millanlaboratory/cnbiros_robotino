@@ -10,7 +10,7 @@ Infrared::Infrared(cnbiros::robotino::Base* base) {
 
 	this->robotinobase_ = base;
 	this->setComId(base->GetId());
-	this->rospub_ = base->GetNode()->advertise<sensor_msgs::PointCloud>
+	this->rospub_ = base->GetNode()->advertise<sensor_msgs::PointCloud2>
 								(base->GetNode()->getNamespace()+"/infrared", 
 								 CNBIROS_CORE_BUFFER_MESSAGES);
 }
@@ -21,42 +21,38 @@ void Infrared::distancesChangedEvent(const float* ranges, unsigned int size) {
 
 	float x, y, z;
 	float angle_inc, range_min, range_max, height, base_radius;
-	geometry_msgs::Point32 point;
-	sensor_msgs::ChannelFloat32 channel;
-	sensor_msgs::PointCloud data;
+	unsigned int inrange = 0;
+
+	PointCloud::Ptr msg(new PointCloud);
+	msg->header.frame_id = "infrared_link";
+	msg->height =  1;
+	msg->width =  size;
 
 	angle_inc   = CNBIROS_ROBOTINO_INFRARED_ANGLE_INC;
 	range_max   = CNBIROS_ROBOTINO_INFRARED_RANGE_MAX;
 	height 		= CNBIROS_ROBOTINO_INFRARED_HEIGHT;
 	base_radius = CNBIROS_ROBOTINO_BASE_RADIUS;
 
-	// Build the PointCloud msg
-	data.header.stamp 		= ros::Time::now();
-	data.header.frame_id 	= "base_link";
-	data.points.clear();
-	data.channels.clear();
-
-	channel.name = "strength";
-	channel.values.resize(size);
-
 	// Fill the point cloud by iterating the input vector of distance. Checking
 	// if the distance are inside the min-max range of the infrared sensors.
 	// Otherwise set the value to 0 (not done by the robotino::api2)
 	for(auto i = 0; i < size; ++i) {
-		point.x = (ranges[i] + base_radius) * cos(angle_inc * i);
-		point.y = (ranges[i] + base_radius) * sin(angle_inc * i);
-		point.z = height;
 		
-		channel.values[i] = 0.0f;
-		if(ranges[i] > 0.0f && ranges[i] < range_max) {
-			channel.values[i] = 1.0f;
-		} 
+		if(ranges[i] > range_max) 
+			continue;
 
-		data.points.push_back(point);
+		x = (ranges[i] + base_radius) * cos(angle_inc * i);
+		y = (ranges[i] + base_radius) * sin(angle_inc * i);
+		z = height;
+		
+		msg->points.push_back(pcl::PointXYZ(x, y, z));
+		inrange++;
 	}
-	data.channels.push_back(channel);
 
-	this->rospub_.publish(data);
+	msg->points.resize(inrange);
+	msg->width = inrange;
+
+	this->rospub_.publish(msg);
 }
 
 

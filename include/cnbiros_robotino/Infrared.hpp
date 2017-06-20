@@ -4,13 +4,16 @@
 #include <rec/robotino/api2/DistanceSensorArray.h>
 
 #include <ros/ros.h>
-#include <sensor_msgs/PointCloud.h>
+#include <pcl_ros/point_cloud.h>
+#include <pcl/point_types.h>
 
 #include "cnbiros_robotino/Base.hpp"
 #include "cnbiros_robotino/Flags.hpp"
 
 namespace cnbiros {
 	namespace robotino {
+
+typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
 
 class Infrared : public rec::robotino::api2::DistanceSensorArray {
 
