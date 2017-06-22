@@ -20,7 +20,7 @@ int main (int argc, char** argv) {
 	cnbiros::robotino::Odometry odometry(&robotino);
 	cnbiros::robotino::Motors	motors(&robotino);
 
-	node.getParam("/ros_robotino/address", address);
+	node.getParam("address", address);
 
 	ROS_INFO("Try to connect to robotino at: %s", address.c_str());
 	robotino.Connect(address);
