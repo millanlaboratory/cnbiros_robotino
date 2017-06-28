@@ -11,8 +11,7 @@ Infrared::Infrared(cnbiros::robotino::Base* base) {
 	this->robotinobase_ = base;
 	this->setComId(base->GetId());
 	this->rospub_ = base->GetNode()->advertise<sensor_msgs::PointCloud>
-								(base->GetNode()->getNamespace()+"/infrared", 
-								 CNBIROS_CORE_BUFFER_MESSAGES);
+								("infrared", CNBIROS_CORE_BUFFER_MESSAGES);
 }
 
 Infrared::~Infrared(void) {}

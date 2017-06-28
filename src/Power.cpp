@@ -14,13 +14,11 @@ Power::Power(cnbiros::robotino::Base* base) {
 
 	// Topic initialization
 	this->rospub_ = base->GetNode()->advertise<sensor_msgs::BatteryState>
-								(base->GetNode()->getNamespace()+"/power", 
-								 CNBIROS_CORE_BUFFER_MESSAGES);
+								("power", CNBIROS_CORE_BUFFER_MESSAGES);
 
 	// Ros initialization
 	this->rossrv_power_ = base->GetNode()->advertiseService(
-					  	  base->GetNode()->getNamespace()+"/power", 
-					  	  &Power::on_power_service_, this);
+					  	  "get_power_info", &Power::on_power_service_, this);
 }
 
 Power::~Power(void) {}

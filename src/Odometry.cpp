@@ -10,8 +10,10 @@ Odometry::Odometry(cnbiros::robotino::Base* base) {
 	this->robotinobase_ = base;
 	this->setComId(base->GetId());
 	this->rospub_ = base->GetNode()->advertise<nav_msgs::Odometry>
-								(base->GetNode()->getNamespace()+"/odometry", 
-								 CNBIROS_CORE_BUFFER_MESSAGES);
+								("odom", CNBIROS_CORE_BUFFER_MESSAGES);
+
+
+	// Add odometry service
 }
 
 Odometry::~Odometry(void) {}
