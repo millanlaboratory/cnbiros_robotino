@@ -9,7 +9,7 @@ namespace cnbiros {
 Base::Base(ros::NodeHandle* node) : cnbiros::core::NodeInterface(node, "robotino_base") {
 	this->robotinocom_ = new Communication;
 
-	this->rossrv_communication_ = node->advertiseService("request_comm", 
+	this->rossrv_communication_ = node->advertiseService(ros::this_node::getName() + "/set_communication", 
 								  &Base::on_communication_service_, this);
 }
 

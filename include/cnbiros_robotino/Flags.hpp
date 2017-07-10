@@ -1,6 +1,8 @@
 #ifndef CNBIROS_ROBOTINO_FLAGS_HPP
 #define CNBIROS_ROBOTINO_FLAGS_HPP
 
+#define CNBIROS_ROBOTINO_ODOMETRY_LINK 		    "odometry_link"
+#define CNBIROS_ROBOTINO_BASE_LINK 		   		"base_link"
 
 #define CNBIROS_ROBOTINO_BASE_RADIUS 			0.2f				// [m]
 

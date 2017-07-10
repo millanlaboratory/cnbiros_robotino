@@ -6,7 +6,7 @@
 #include <sensor_msgs/BatteryState.h>
 
 #include "cnbiros_robotino/Base.hpp"
-#include "cnbiros_robotino/PowerService.h"
+#include "cnbiros_robotino/GetPowerSrv.h"
 
 namespace cnbiros {
 	namespace robotino {
@@ -21,10 +21,10 @@ class Power : public rec::robotino::api2::PowerManagement {
 						   const char* btype, bool blow, int blowcounter);
 
 	private:
-		bool on_power_service_(cnbiros_robotino::PowerService::Request &req,
-							   cnbiros_robotino::PowerService::Response &res);
+		bool on_get_power_(cnbiros_robotino::GetPowerSrv::Request &req,
+							   cnbiros_robotino::GetPowerSrv::Response &res);
 	private:
-		ros::ServiceServer 			rossrv_power_;
+		ros::ServiceServer 			rossrv_get_power_;
 		ros::Publisher 			 	rospub_;
 		cnbiros::robotino::Base* 	robotinobase_;
 	

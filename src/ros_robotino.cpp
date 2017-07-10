@@ -10,7 +10,7 @@ int main (int argc, char** argv) {
 	std::string address;
 	
 	ros::init(argc, argv, "ros_robotino");
-	ros::NodeHandle node("~");
+	ros::NodeHandle node;
 
 	cnbiros::robotino::Base robotino(&node);
 	robotino.SetRate(20);
@@ -20,7 +20,8 @@ int main (int argc, char** argv) {
 	cnbiros::robotino::Odometry odometry(&robotino);
 	cnbiros::robotino::Motors	motors(&robotino);
 
-	node.getParam("address", address);
+	//node.getParam("address", address);
+	ros::param::get("~address", address);
 
 	ROS_INFO("Try to connect to robotino at: %s", address.c_str());
 	robotino.Connect(address);

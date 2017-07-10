@@ -2,7 +2,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 cmake_minimum_required(VERSION 2.8.3)
 project(cnbiros_robotino)
 
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs message_generation
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs nav_msgs message_generation
 			 cnbiros_core)
 
 SET(CMAKE_BUILD_TYPE RelWithDebInfo)
@@ -17,12 +17,15 @@ include_directories(${catkin_INCLUDE_DIRS}
 add_service_files(
   FILES
   CommService.srv
-  PowerService.srv
+  GetPowerSrv.srv
+  GetOdometrySrv.srv
+  SetOdometrySrv.srv
 )
 
 generate_messages(
   DEPENDENCIES
   std_msgs
+  nav_msgs
 )
 
 catkin_package(

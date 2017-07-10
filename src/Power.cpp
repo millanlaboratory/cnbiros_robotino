@@ -17,14 +17,14 @@ Power::Power(cnbiros::robotino::Base* base) {
 								("power", CNBIROS_CORE_BUFFER_MESSAGES);
 
 	// Ros initialization
-	this->rossrv_power_ = base->GetNode()->advertiseService(
-					  	  "get_power_info", &Power::on_power_service_, this);
+	this->rossrv_get_power_ = base->GetNode()->advertiseService(
+					  	  ros::this_node::getName() + "/get_power", &Power::on_get_power_, this);
 }
 
 Power::~Power(void) {}
 
-bool Power::on_power_service_(cnbiros_robotino::PowerService::Request &req,
-							  cnbiros_robotino::PowerService::Response &res) {
+bool Power::on_get_power_(cnbiros_robotino::GetPowerSrv::Request &req,
+							  cnbiros_robotino::GetPowerSrv::Response &res) {
 
 	res.voltage   			 = this->voltage();
 	res.current   			 = this->current();
