@@ -26,7 +26,7 @@ int main (int argc, char** argv) {
 	ROS_INFO("Try to connect to robotino at: %s", address.c_str());
 	robotino.Connect(address);
 	
-	robotino.Start();
+	robotino.Run();
 
 	return 0;
 }
