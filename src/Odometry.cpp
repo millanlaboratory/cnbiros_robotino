@@ -19,6 +19,7 @@ Odometry::Odometry(cnbiros::robotino::Base* base) {
 	
 	this->rossrv_set_odometry_ = base->GetNode()->advertiseService(
 					  	     ros::this_node::getName() + "/set_odometry", &Odometry::on_set_odometry_, this);
+
 }
 
 Odometry::~Odometry(void) {}
