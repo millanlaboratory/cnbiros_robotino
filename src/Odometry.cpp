@@ -31,7 +31,7 @@ bool Odometry::on_get_odometry_(cnbiros_robotino::GetOdometrySrv::Request &req,
 	unsigned int sequence;
 
 	this->readings(&x, &y, &phi, &sequence);
-	
+    //ROS_INFO("x: %f, y: %f", x, y);	
 	res.odometry.header.stamp    = ros::Time::now();
 	res.odometry.header.seq      = sequence;
 	res.odometry.header.frame_id = CNBIROS_ROBOTINO_ODOMETRY_LINK;
@@ -69,7 +69,7 @@ void Odometry::readingsEvent(double x, double y, double omega,
 
 	odom.header.stamp    = ros::Time::now();
 	odom.header.seq      = sequence;
-
+    //ROS_INFO("x: %f, y: %f, phi: %f", x, y, omega);
 	odom.pose.pose.position.x  = x;
 	odom.pose.pose.position.y  = y;
 	odom.pose.pose.position.z  = z;
